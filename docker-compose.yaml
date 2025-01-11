@@ -1,0 +1,21 @@
+services:
+  example_nginx:
+    container_name: example_nginx
+    image: nginx:1.21.3-alpine
+    restart: on-failure
+    volumes:
+      - './:/var/www/app:ro'
+      - './docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
+    ports:
+      - "9081:80"
+    depends_on:
+      - example_php
+
+  example_php:
+    container_name: example_php
+    user: 1000:1000
+    build:
+      context: .
+    working_dir: /var/www/app/project/
+    volumes:
+      - './:/var/www/app/'
